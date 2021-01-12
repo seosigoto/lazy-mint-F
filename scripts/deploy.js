@@ -1,3 +1,5 @@
+const hre = require("hardhat");
+const fs = require('fs');
 async function main() {
 
     if (network.name === "hardhat") {
@@ -17,7 +19,7 @@ async function main() {
     console.log("Account balance:", (await deployer.getBalance()).toString());
 
     const C = await ethers.getContractFactory("Lazy");
-    const c = await C.deploy();
+    const c = await C.deploy("0x0D4ae8efFBCdf74F6005A4a4B6A28B50f36B75f0");
     await c.deployed();
 
     console.log("Token address:", c.address);

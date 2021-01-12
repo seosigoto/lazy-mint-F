@@ -2,21 +2,34 @@
   "name": "signers",
   "version": "1.0.0",
   "description": "",
+  
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.js --network ropsten",
+    "verify": "npx hardhat verify --network ropsten "
+  },  
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.4.0",
+    "@openzeppelin/test-helpers": "^0.5.15",
+    "@pinata/ipfs-gateway-tools": "^1.1.6",
+    "axios": "^0.23.0",
+    "bignumber.js": "^9.0.1",
+    "dotenv": "^10.0.0",
+    "form-data": "^4.0.0",
+    "fs": "0.0.1-security"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.1",
+    "@nomiclabs/hardhat-etherscan": "^2.1.8",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "@openzeppelin/hardhat-upgrades": "^1.10.0",
     "chai": "^4.3.3",
     "ethereum-waffle": "^3.3.0",
     "ethers": "^5.0.31",
     "hardhat": "^2.1.1"
   },
-  "dependencies": {
-    "@openzeppelin/contracts": "^3.4.1"
-  }
+  "author": "",
+  "license": "ISC"
 }
