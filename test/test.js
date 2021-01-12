@@ -1,27 +1,37 @@
+const balance = require("@openzeppelin/test-helpers/src/balance");
 const { expect } = require("chai");
+const { BigNumber } = require("ethers");
+
+const ether = (amount) => {
+  const weiString = ethers.utils.parseEther(amount.toString());
+  return BigNumber.from(weiString);
+};
 
 describe("Lazy Minting Function", () => {
 
     let Lazy;
     let lazyContract;
     let owner;
-    let addr1;
-    let addr2;
-    let addrs;
     let contractAddr;
 
     beforeEach(async () => {
         Lazy = await ethers.getContractFactory("Lazy");
-        [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
+        [owner, addr1, addr2, addr3, addr4, addr5, addr6,...addrs] = await ethers.getSigners();
 
-        lazyContract = await Lazy.deploy();
+        lazyContract = await Lazy.deploy(owner.address);
         await lazyContract.deployed();
 
         contractAddr = lazyContract.address;
+
+        // const provider = ethers.getDefaultProvider()
+        // const balance = await provider.getBalance(owner.address)
+        // const balanceInEth = ethers.utils.formatEther(balance)
+        // console.log(`balance: ${balanceInEth} ETH`)
     });
 
     // Just making sure the contract is loading up as we expect.
     describe("Sanity check...", () => {
+        // console.log("here");
         it("should set the correct token symbol", async () => {
             expect(await lazyContract.symbol() === "LAZY");
         });
@@ -36,13 +46,92 @@ describe("Lazy Minting Function", () => {
      NFT is minted with the metadata passed to the function.
      ----
      this is an example of the postive case (working). */
-    describe("Minting NFT with correct params", () => {
+    describe("Minting NFT with normal user purchasing", () => {
         it("should mint NFT to sender", async () => {
+            let balance = await owner.getBalance();
+            console.log("artist Balance : ", ethers.utils.formatEther(balance));
+
+            balance = await addr1.getBalance();
+            console.log("Address 1 Balance : ", ethers.utils.formatEther(balance));
+
+            balance = await addr2.getBalance();
+            console.log("Address 2 Balance : ", ethers.utils.formatEther(balance));
+
+            balance = await addr3.getBalance();
+            console.log("owner 1  Balance : (83%)", ethers.utils.formatEther(balance));
+
+            balance = await addr4.getBalance();
+            console.log("owner 2 Balance : (83%)", ethers.utils.formatEther(balance));
+
+            balance = await addr5.getBalance();
+            console.log("owner 3 Balance : (2%) ", ethers.utils.formatEther(balance));
+
             const metadata = "value: rare";
             const sig = signMessage(owner, metadata);
-            const _tx = await lazyContract.mintToken(metadata, sig);
-            await expect(metadata === lazyContract.tokenURI(await lazyContract.tokenByIndex(0)));
-        })
+            const _tx = await lazyContract.connect(addr1).mintToken(metadata, sig, { value: ether(0.25) });
+
+            expect(metadata === lazyContract.tokenURI(0));
+            console.log("Updated Balance");
+            balance = await owner.getBalance();
+            console.log("artist Balance : ", ethers.utils.formatEther(balance));
+
+            balance = await addr1.getBalance();
+            console.log("Address 1 Balance : ", ethers.utils.formatEther(balance));
+
+            balance = await addr2.getBalance();
+            console.log("Address 2 Balance : ", ethers.utils.formatEther(balance));
+
+            balance = await addr3.getBalance();
+            console.log("owner 1 Balance : (83%)", ethers.utils.formatEther(balance));
+
+            balance = await addr4.getBalance();
+            console.log("owner 2 Balance : (83%)", ethers.utils.formatEther(balance));
+
+            balance = await addr5.getBalance();
+            console.log("owner 3 Balance : (2%)", ethers.utils.formatEther(balance));
+        });
+    });
+
+    describe("Minting NFT with whitelist user purchasing", () => {
+        it("should mint NFT to sender", async () => {
+            let balance = await owner.getBalance();
+            console.log("artist Balance : ", ethers.utils.formatEther(balance));
+
+            balance = await addr6.getBalance();
+            console.log("whitelist user Balance : ", ethers.utils.formatEther(balance));
+
+            balance = await addr3.getBalance();
+            console.log("owner 1  Balance : ", ethers.utils.formatEther(balance));
+
+            balance = await addr4.getBalance();
+            console.log("owner 2 Balance : ", ethers.utils.formatEther(balance));
+
+            balance = await addr5.getBalance();
+            console.log("owner 3 Balance : ", ethers.utils.formatEther(balance));
+
+            const metadata = "value: rare";
+            await lazyContract.connect(owner).addWhitelistuser(addr6.address);
+            const sig = signMessage(owner, metadata);
+            const _tx = await lazyContract.connect(addr6).mintToken(metadata, sig, { value: ether(0.25) });
+
+            expect(metadata === lazyContract.tokenURI(0));
+            console.log("Updated Balance");
+            balance = await owner.getBalance();
+            console.log("artist Balance : ", ethers.utils.formatEther(balance));
+
+            balance = await addr6.getBalance();
+            console.log("whitelist user Balance : ", ethers.utils.formatEther(balance));
+
+            balance = await addr3.getBalance();
+            console.log("owner 1 Balance : (40%)", ethers.utils.formatEther(balance));
+
+            balance = await addr4.getBalance();
+            console.log("owner 2 Balance : (58%)", ethers.utils.formatEther(balance));
+
+            balance = await addr5.getBalance();
+            console.log("owner 3 Balance : (2%)", ethers.utils.formatEther(balance));
+            
+        });
     });
 
 
@@ -56,15 +145,6 @@ describe("Lazy Minting Function", () => {
      -----
      this is an example of a bad actor trying to mint an NFT with incorrect metadata
      and shows how the contract throws in this case. */
-    describe("Failing to mint NFT with incorrect params", () => {
-        it("should fail with invalid signature", async () => {
-            const metadata = "value: common";
-            const sig = signMessage(owner, metadata);
-            const falseMetadata = "value: rare";
-            await expect(lazyContract.mintToken(falseMetadata, sig))
-            .to.be.revertedWith("revert NFT params are not valid");
-        })
-    });
 });
 
     /* A known issue!

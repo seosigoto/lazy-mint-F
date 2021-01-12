@@ -7,8 +7,9 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl {
+contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable {
 
     using ECDSA for bytes32;
     using Counters for Counters.Counter;
@@ -36,9 +37,9 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl {
             _setupRole(MINTER_ROLE, minter);
         }
 
-    address owner1 = 0x0D4ae8efFBCdf74F6005A4a4B6A28B50f36B75f0;
-    address owner2 = 0x0D4ae8efFBCdf74F6005A4a4B6A28B50f36B75f0;
-    address owner3 = 0x0D4ae8efFBCdf74F6005A4a4B6A28B50f36B75f0;
+    address owner1 = 0x90F79bf6EB2c4f870365E785982E1f101E93b906;
+    address owner2 = 0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65;
+    address owner3 = 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc;
 
 
     /// @dev verifies the param "message" is valid
@@ -46,7 +47,7 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl {
     /// then, anyone can call this function with that signature and the message param.
     /// If anyone tries to call the funcntion with a message different than the one
     /// owner used to sign the message then it will return false.
-    function _verify(string calldata message, bytes calldata sign) internal pure returns (address) {
+    function _verify(string calldata message, bytes calldata sign) public pure returns (address) {
         bytes32 b = keccak256(abi.encodePacked(message));
         return b.toEthSignedMessageHash().recover(sign);
     }
@@ -83,6 +84,10 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl {
         require(sent, "Failed to send Ether");
     }
 
+    function addWhitelistuser(address user) public onlyOwner{
+        whiteLists[user] = true;
+
+    }
 
     function supportsInterface(bytes4 interfaceId) public view virtual override (AccessControl, ERC721) returns (bool) {
         return ERC721.supportsInterface(interfaceId) || AccessControl.supportsInterface(interfaceId);

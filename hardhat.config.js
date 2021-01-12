@@ -3,6 +3,7 @@ require("@nomiclabs/hardhat-etherscan");
 
 require("@nomiclabs/hardhat-ethers");
 require('@openzeppelin/hardhat-upgrades');
+require("@nomiclabs/hardhat-ganache");
 
 require('dotenv').config();
 
