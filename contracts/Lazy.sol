@@ -62,15 +62,11 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl {
         _setTokenURI(tokenId, message);        
         _transfer(signer, msg.sender, tokenId); 
         
-        sendmoney(msg.sender);
-    }
-
-    function sendmoney(address iswhite) internal {
         uint shareamount1;
         uint shareamount2;
         uint shareamount3;
 
-        if (whiteLists[iswhite]) {
+        if (whiteLists[msg.sender]) {
             shareamount1 = shareOfWhitelist1;
             shareamount2 = shareOfWhitelist2;
             shareamount3 = shareOfWhitelist3;            
