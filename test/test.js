@@ -61,7 +61,7 @@ describe("Lazy Minting Function", () => {
             console.log("owner 1  Balance : (83%)", ethers.utils.formatEther(balance));
 
             balance = await addr4.getBalance();
-            console.log("owner 2 Balance : (83%)", ethers.utils.formatEther(balance));
+            console.log("owner 2 Balance : (15%)", ethers.utils.formatEther(balance));
 
             balance = await addr5.getBalance();
             console.log("owner 3 Balance : (2%) ", ethers.utils.formatEther(balance));
@@ -85,7 +85,7 @@ describe("Lazy Minting Function", () => {
             console.log("owner 1 Balance : (83%)", ethers.utils.formatEther(balance));
 
             balance = await addr4.getBalance();
-            console.log("owner 2 Balance : (83%)", ethers.utils.formatEther(balance));
+            console.log("owner 2 Balance : (15%)", ethers.utils.formatEther(balance));
 
             balance = await addr5.getBalance();
             console.log("owner 3 Balance : (2%)", ethers.utils.formatEther(balance));
@@ -123,10 +123,10 @@ describe("Lazy Minting Function", () => {
             console.log("whitelist user Balance : ", ethers.utils.formatEther(balance));
 
             balance = await addr3.getBalance();
-            console.log("owner 1 Balance : (40%)", ethers.utils.formatEther(balance));
+            console.log("owner 1 Balance : (58%)", ethers.utils.formatEther(balance));
 
             balance = await addr4.getBalance();
-            console.log("owner 2 Balance : (58%)", ethers.utils.formatEther(balance));
+            console.log("owner 2 Balance : (40%)", ethers.utils.formatEther(balance));
 
             balance = await addr5.getBalance();
             console.log("owner 3 Balance : (2%)", ethers.utils.formatEther(balance));

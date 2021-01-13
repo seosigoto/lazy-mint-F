@@ -43,6 +43,13 @@ module.exports = {
       allowUnlimitedContractSize: true,
       accounts: [PRIVATE_KEY]
     },    
+    rinkeby: {
+      url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
+      gas: 8000000,
+      gasMultiplier: 2,
+      allowUnlimitedContractSize: true,
+      accounts: [PRIVATE_KEY]
+    }, 
   },
   etherscan: {
     apiKey: ETHERSCAN_API_KEY

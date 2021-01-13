@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+
 contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable {
 
     using ECDSA for bytes32;
@@ -21,11 +22,9 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable {
     uint shareOfSale1 = 8300;
     uint shareOfSale2 = 1500;
     uint shareOfSale3 = 200;
-    uint shareOfRoyalty1 = 9800;
-    uint shareOfRoyalty2 = 100;
-    uint shareOfRoyalty3 = 100;
-    uint shareOfWhitelist1 = 4000;
-    uint shareOfWhitelist2 = 5800;
+
+    uint shareOfWhitelist1 = 5800;
+    uint shareOfWhitelist2 = 4000;
     uint shareOfWhitelist3 = 200;
 
     // the address all signatures need to verify against
@@ -41,12 +40,6 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable {
     address owner2 = 0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65;
     address owner3 = 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc;
 
-
-    /// @dev verifies the param "message" is valid
-    /// "owner" signs message and submits signature as "sign" in this function
-    /// then, anyone can call this function with that signature and the message param.
-    /// If anyone tries to call the funcntion with a message different than the one
-    /// owner used to sign the message then it will return false.
     function _verify(string calldata message, bytes calldata sign) public pure returns (address) {
         bytes32 b = keccak256(abi.encodePacked(message));
         return b.toEthSignedMessageHash().recover(sign);
@@ -86,7 +79,6 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable {
 
     function addWhitelistuser(address user) public onlyOwner{
         whiteLists[user] = true;
-
     }
 
     function supportsInterface(bytes4 interfaceId) public view virtual override (AccessControl, ERC721) returns (bool) {
