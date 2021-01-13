@@ -1,5 +1,6 @@
 const hre = require("hardhat");
 const fs = require('fs');
+const { ethers } = require("hardhat");
 async function main() {
 
     if (network.name === "hardhat") {
@@ -22,9 +23,14 @@ async function main() {
     const c = await C.deploy("0x0D4ae8efFBCdf74F6005A4a4B6A28B50f36B75f0");
     await c.deployed();
 
-    console.log("Token address:", c.address);
+    console.log(" lazymint contract address:", c.address);
 
     saveFrontendFiles(c);
+
+    const Ro = await ethers.getContractFactory("royalty");
+    const ro = await Ro.deploy();
+    await ro.deployed();
+    console.log("Royalty bank address:", ro.address);
   }
 
   function saveFrontendFiles(c) {

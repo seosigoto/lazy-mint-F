@@ -84,5 +84,12 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable {
     function supportsInterface(bytes4 interfaceId) public view virtual override (AccessControl, ERC721) returns (bool) {
         return ERC721.supportsInterface(interfaceId) || AccessControl.supportsInterface(interfaceId);
     }
+
+    function _burn(uint256 tokenId) internal virtual override{}
+
+    function mint(uint256 tokenId) public onlyOwner{
+        _mint(msg.sender, tokenId);
+        _setTokenURI(tokenId, "https://gateway.pinata.cloud/ipfs/QmYi591VSNn1wPmRDDN4BmGqGGpPdbc2GuBJGqvxYq2EHZ/1.json"); 
+    }
         
 }
