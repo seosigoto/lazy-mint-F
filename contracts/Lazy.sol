@@ -5,12 +5,14 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 
-contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable {
+
+contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable, ERC721Enumerable {
 
     using ECDSA for bytes32;
     using Counters for Counters.Counter;
@@ -81,15 +83,38 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable {
         whiteLists[user] = true;
     }
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override (AccessControl, ERC721) returns (bool) {
+    function removeWhitelistuser(address user) public onlyOwner{
+        whiteLists[user] = false;
+    }
+
+    function supportsInterface(bytes4 interfaceId) public view virtual override (AccessControl, ERC721, ERC721Enumerable) returns (bool) {
         return ERC721.supportsInterface(interfaceId) || AccessControl.supportsInterface(interfaceId);
     }
 
-    function _burn(uint256 tokenId) internal virtual override{}
+    function _burn(uint256 tokenId) internal virtual override (ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
+    }
 
-    function mint(uint256 tokenId) public onlyOwner{
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal virtual override (ERC721, ERC721Enumerable) {
+        super._beforeTokenTransfer(from, to, tokenId);
+    }
+
+    function tokenURI(uint256 tokenId) public view virtual override (ERC721, ERC721URIStorage) returns (string memory) {
+        return super.tokenURI(tokenId);
+    }
+
+
+    // this is the test function; will be deleted after deploy on main net.
+    function mint(uint256 tokenId, uint index) public onlyOwner{
         _mint(msg.sender, tokenId);
-        _setTokenURI(tokenId, "https://gateway.pinata.cloud/ipfs/QmYi591VSNn1wPmRDDN4BmGqGGpPdbc2GuBJGqvxYq2EHZ/1.json"); 
+        string[] memory see = new string[](5);
+        see[0] = 'https://gateway.pinata.cloud/ipfs/QmR3NepWfoadroEPKXSW6MDBpnvnYQf5i635xJ71N8N6pj/1.json';
+        see[1] = 'https://gateway.pinata.cloud/ipfs/QmR3NepWfoadroEPKXSW6MDBpnvnYQf5i635xJ71N8N6pj/2.json';
+        see[2] = 'https://gateway.pinata.cloud/ipfs/QmR3NepWfoadroEPKXSW6MDBpnvnYQf5i635xJ71N8N6pj/3.json';
+        see[3] = 'https://gateway.pinata.cloud/ipfs/QmR3NepWfoadroEPKXSW6MDBpnvnYQf5i635xJ71N8N6pj/4.json';
+        see[4] = 'https://gateway.pinata.cloud/ipfs/QmR3NepWfoadroEPKXSW6MDBpnvnYQf5i635xJ71N8N6pj/5.json';
+
+        _setTokenURI(tokenId, see[index]); 
     }
         
 }
