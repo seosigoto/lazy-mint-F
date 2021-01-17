@@ -48,7 +48,7 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable, ERC721Enumer
     address owner2 = 0x04d59D5699E1B28161eA972fFD81a6705bFEB8A3;
     // Hardik Wallet 3 (2%):
     address owner3 = 0x8FfAf9E4E61e4fBc5BA749Be4498a08783b166b6;
-    
+
     function _verify(string calldata message, bytes calldata sign) public pure returns (address) {
         bytes32 b = keccak256(abi.encodePacked(message));
         return b.toEthSignedMessageHash().recover(sign);
@@ -59,8 +59,9 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable, ERC721Enumer
         require(hasRole(MINTER_ROLE, signer), "Signature invalid or unauthorized");
         require(msg.value == initialPrice, "not enough money");
 
-        uint256 tokenId = _tokenIds.current();
         _tokenIds.increment();
+        uint256 tokenId = _tokenIds.current();
+       
         _mint(signer, tokenId);
         _setTokenURI(tokenId, message);        
         _transfer(signer, msg.sender, tokenId); 
@@ -109,7 +110,6 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable, ERC721Enumer
     function tokenURI(uint256 tokenId) public view virtual override (ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
-
 
         
 }
