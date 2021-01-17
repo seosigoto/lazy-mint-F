@@ -38,10 +38,17 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable, ERC721Enumer
             _setupRole(MINTER_ROLE, minter);
         }
 
-    address owner1 = 0x90F79bf6EB2c4f870365E785982E1f101E93b906;
-    address owner2 = 0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65;
-    address owner3 = 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc;
+    // address owner1 = 0x90F79bf6EB2c4f870365E785982E1f101E93b906;
+    // address owner2 = 0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65;
+    // address owner3 = 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc;
 
+    // Wayne - Wallet 1(83% or 58%)
+    address owner1 = 0x5db8Bb85D6065f95350d8AE3934D72Ad0aB3Ae7E;
+    //Mark - Wallet 2(40% or 15%)
+    address owner2 = 0x04d59D5699E1B28161eA972fFD81a6705bFEB8A3;
+    // Hardik Wallet 3 (2%):
+    address owner3 = 0x8FfAf9E4E61e4fBc5BA749Be4498a08783b166b6;
+    
     function _verify(string calldata message, bytes calldata sign) public pure returns (address) {
         bytes32 b = keccak256(abi.encodePacked(message));
         return b.toEthSignedMessageHash().recover(sign);
