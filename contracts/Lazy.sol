@@ -61,6 +61,7 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable, ERC721Enumer
 
         _tokenIds.increment();
         uint256 tokenId = _tokenIds.current();
+        require(tokenId <= 10000, "over the 10000");
        
         _mint(signer, tokenId);
         _setTokenURI(tokenId, message);        
