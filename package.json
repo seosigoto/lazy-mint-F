@@ -18,7 +18,8 @@
     "dotenv": "^10.0.0",
     "edit-json-file": "^1.7.0",
     "form-data": "^4.0.0",
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "web3": "^1.7.0"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.1",

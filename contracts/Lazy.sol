@@ -54,19 +54,20 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable, ERC721Enumer
         return b.toEthSignedMessageHash().recover(sign);
     }
 
-    function mintToken(string calldata message, bytes calldata sign) public payable{
-        address signer =_verify(message, sign);
-        require(hasRole(MINTER_ROLE, signer), "Signature invalid or unauthorized");
-        require(msg.value == initialPrice, "not enough money");
-
-        _tokenIds.increment();
-        uint256 tokenId = _tokenIds.current();
-        require(tokenId <= 10000, "over the 10000");
-       
-        _mint(signer, tokenId);
-        _setTokenURI(tokenId, message);        
-        _transfer(signer, msg.sender, tokenId); 
-        
+    function mintToken(uint256 amount, string[] calldata message, bytes[] calldata sign) public payable{
+        require(message.length == amount, "Invalid number of messages");
+        require(msg.value == initialPrice * amount, "not enough money");
+        require(totalSupply() + amount <= 10000, "over the 10000");
+        for (uint256 index = 0; index < amount; index++) {
+            address signer =_verify(message[index], sign[index]);
+            require(hasRole(MINTER_ROLE, signer), "Signature invalid or unauthorized");
+            _tokenIds.increment();
+            uint256 tokenId = _tokenIds.current();
+            _mint(signer, tokenId);
+            _setTokenURI(tokenId, message[index]);        
+            _transfer(signer, msg.sender, tokenId); 
+        }
+                
         uint shareamount1;
         uint shareamount2;
         uint shareamount3;
@@ -80,16 +81,22 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable, ERC721Enumer
             shareamount2 = shareOfSale2;
             shareamount3 = shareOfSale3;   
         }
-        (bool sent, ) = payable(owner1).call{value: (msg.value * shareamount1/ 10000)}("");
+        (bool sent, ) = payable(owner1).call{value: (msg.value * amount * shareamount1/ 10000)}("");
         require(sent, "Failed to send Ether");
-        (sent, ) = payable(owner2).call{value: (msg.value * shareamount2/ 10000)}("");
+        (sent, ) = payable(owner2).call{value: (msg.value * amount * shareamount2/ 10000)}("");
         require(sent, "Failed to send Ether");
-        (sent, ) = payable(owner3).call{value: (msg.value * shareamount3/ 10000)}("");
+        (sent, ) = payable(owner3).call{value: (msg.value * amount * shareamount3/ 10000)}("");
         require(sent, "Failed to send Ether");
     }
 
     function addWhitelistuser(address user) public onlyOwner{
         whiteLists[user] = true;
+    }
+
+    function addBulkWhitelistUser(address[] memory users) public onlyOwner{
+        for(uint i = 0; i< users.length; i++){
+            whiteLists[users[i]] = true;
+        }
     }
 
     function removeWhitelistuser(address user) public onlyOwner{
@@ -112,5 +119,16 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable, ERC721Enumer
         return super.tokenURI(tokenId);
     }
 
+    // function mint(uint256 tokenId, uint index) public onlyOwner{
+    //     _mint(msg.sender, tokenId);
+    //     string[] memory see = new string[](5);
+    //     see[0] = 'https://gateway.pinata.cloud/ipfs/QmewR7QpPXUD9RKpy85KP1hwYHhyYn3oMuZn5i2PhuSS5A/1.json';
+    //     see[1] = 'https://gateway.pinata.cloud/ipfs/QmewR7QpPXUD9RKpy85KP1hwYHhyYn3oMuZn5i2PhuSS5A/2.json';
+    //     see[2] = 'https://gateway.pinata.cloud/ipfs/QmewR7QpPXUD9RKpy85KP1hwYHhyYn3oMuZn5i2PhuSS5A/3.json';
+    //     see[3] = 'https://gateway.pinata.cloud/ipfs/QmewR7QpPXUD9RKpy85KP1hwYHhyYn3oMuZn5i2PhuSS5A/4.json';
+    //     see[4] = 'https://gateway.pinata.cloud/ipfs/QmewR7QpPXUD9RKpy85KP1hwYHhyYn3oMuZn5i2PhuSS5A/5.json';
+
+    //     _setTokenURI(tokenId, see[index]); 
+    // }
         
 }
