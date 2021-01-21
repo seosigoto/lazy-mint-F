@@ -1,0 +1,165 @@
+body {
+  font-family: Roboto, sans-serif;
+  background: #131313;
+  color: #757575;
+  margin: 0px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+}
+
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;  
+  align-items: center;
+  justify-content: center;
+}
+
+/* Form */
+form {
+  position: relative;
+  display: flex;
+}
+
+input {
+  width: 360px;
+  background: #fff;
+  color: #a3a3a3;
+  font: inherit;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 5px 0px 0px 5px;
+  border: 0;
+  outline: 0;
+  padding: 22px 18px;
+  transition: 0.5s ease all; 
+}
+
+input:focus {
+  color: #595959;
+}
+
+::placeholder {
+  transition: 0.5s ease all; 
+}
+
+input:focus::placeholder { 
+  color: #a3a3a3;
+}
+
+label {
+  color: #999; 
+  font-size: 15px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 0px;
+  top: -26px;
+  transition: 0.5s ease all; 
+}
+
+input:focus ~ label {
+  color: #626e8c;
+  font-size: 18px;
+}
+
+.btn {
+	font: inherit;
+	border: 0;
+	outline: 0;
+	transition: all 200ms ease-in;
+  cursor: pointer;
+  background: #6279AB;
+  color: #fff;
+  width: 120px;
+  height: 62px;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 0px 5px 5px 0px;
+  padding: 20px 20px;
+}
+
+button:disabled, button:disabled:hover {
+  background: #2c467c;
+  cursor: none;
+}
+		
+.btn:hover {
+  background: #334f8d;
+}
+
+.btn:active {
+  background: #7f8ff4;
+  box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, .2);
+}
+
+/* Confirm */ 
+.confirm a {
+  color: #6279AB;
+  font: inherit;
+  text-decoration: none;
+}
+
+.confirm a:hover {
+  color: #334f8d;
+}
+
+/* Toast Overide */
+.toast-notification {
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 0px 0px 5px 5px;
+  background: #fff;
+  font: inherit;
+  padding: 5px;
+  color: #999;
+  cursor: pointer;
+}
+
+/* Animations */
+.fadein {
+  animation: fadein 2s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.spinning {
+  animation: spin 1.5s infinite linear;
+}
+
+.spinning svg {
+  border-radius: 50%
+}
+
+@keyframes spin {
+  0%  {
+    -webkit-transform: rotate(0deg)
+  }
+  100% {
+    -webkit-transform: rotate(360deg)
+  }   
+} 
+
+.mint-nft button {
+  background: #495155;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  padding: 7px 11px;
+  color: white;
+}
