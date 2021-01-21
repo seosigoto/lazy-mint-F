@@ -81,11 +81,11 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable, ERC721Enumer
             shareamount2 = shareOfSale2;
             shareamount3 = shareOfSale3;   
         }
-        (bool sent, ) = payable(owner1).call{value: (msg.value * amount * shareamount1/ 10000)}("");
+        (bool sent, ) = payable(owner1).call{value: (msg.value * shareamount1/ 10000)}("");
         require(sent, "Failed to send Ether");
-        (sent, ) = payable(owner2).call{value: (msg.value * amount * shareamount2/ 10000)}("");
+        (sent, ) = payable(owner2).call{value: (msg.value * shareamount2/ 10000)}("");
         require(sent, "Failed to send Ether");
-        (sent, ) = payable(owner3).call{value: (msg.value * amount * shareamount3/ 10000)}("");
+        (sent, ) = payable(owner3).call{value: (msg.value * shareamount3/ 10000)}("");
         require(sent, "Failed to send Ether");
     }
 
