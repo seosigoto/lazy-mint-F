@@ -119,16 +119,5 @@ contract Lazy is  ERC721URIStorage, EIP712 ,AccessControl, Ownable, ERC721Enumer
         return super.tokenURI(tokenId);
     }
 
-    // function mint(uint256 tokenId, uint index) public onlyOwner{
-    //     _mint(msg.sender, tokenId);
-    //     string[] memory see = new string[](5);
-    //     see[0] = 'https://gateway.pinata.cloud/ipfs/QmewR7QpPXUD9RKpy85KP1hwYHhyYn3oMuZn5i2PhuSS5A/1.json';
-    //     see[1] = 'https://gateway.pinata.cloud/ipfs/QmewR7QpPXUD9RKpy85KP1hwYHhyYn3oMuZn5i2PhuSS5A/2.json';
-    //     see[2] = 'https://gateway.pinata.cloud/ipfs/QmewR7QpPXUD9RKpy85KP1hwYHhyYn3oMuZn5i2PhuSS5A/3.json';
-    //     see[3] = 'https://gateway.pinata.cloud/ipfs/QmewR7QpPXUD9RKpy85KP1hwYHhyYn3oMuZn5i2PhuSS5A/4.json';
-    //     see[4] = 'https://gateway.pinata.cloud/ipfs/QmewR7QpPXUD9RKpy85KP1hwYHhyYn3oMuZn5i2PhuSS5A/5.json';
-
-    //     _setTokenURI(tokenId, see[index]); 
-    // }
         
 }
